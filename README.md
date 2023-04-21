@@ -132,13 +132,15 @@ mvn install
 
 После этого, в вашей локальной папке для зависимостей (.m2) появится ваш проект, в собранном виде, который можно использовать в других проектах
 
-> добавить в зависимости и готово!
+Добавить в зависимости и готово!
 
->     	<dependency>
->     		<groupId>ru.cmx.maven.example</groupId>
->     		<artifactId>maven-example</artifactId>
->     		<version>1.0-SNAPSHOT</version>
->     	</dependency>
+```
+     	<dependency>
+     		<groupId>ru.cmx.maven.example</groupId>
+     		<artifactId>maven-example</artifactId>
+     		<version>1.0-SNAPSHOT</version>
+     	</dependency>
+```
 
 Так же фазы можно запускать последовательно одной командой:
 
@@ -151,3 +153,55 @@ mvn clean compile test-compile test
 ```ps
 mvn exec:java -Dexec.mainClass="ru.cmx.maven.example.App"
 ```
+
+Также можно посмотреть дерево зависимостей вашего проета, командой:
+
+```ps
+mvn dependency:tree
+```
+
+## А как же превратиться в Spring Boot?
+
+Для примера будем использовать версию Spring Boot 2.7.1, но работает аналогично на большинстве других
+
+Добавляем spring-boot-parent в pom.xml в :
+
+```xml
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.7.1</version>
+    <relativePath />
+  </parent>
+```
+
+и web-mvc в <dependencies>:
+
+```xml
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+  </dependencies>
+```
+
+Добавляем аннотацию `@SpringBootApplication` в наш раннер класс, и запускаем цикл спринг-приложения `SpringApplication.run()`:
+
+```java
+package ru.cmx.maven.example;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class App
+{
+    public static void main( String[] args )
+    {
+        SpringApplication.run(App.class, args);
+    }
+}
+```
+
+Проверить можно, перейдя по адресу сервера http://localhost:8080
